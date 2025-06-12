@@ -1,7 +1,7 @@
 import { Playfair_Display, Lato } from "next/font/google"
 import "./globals.css"
-import "@/styles/ui/marquee-shared.css" // Import shared marquee styles (for AboutSection)
-import { ThemeProvider } from "@/components/theme-provider"
+import "../styles/ui/marquee-shared.css" // Corrected relative path
+import { ThemeProvider } from "../components/theme-provider" // Corrected relative path
 
 const playfair = Playfair_Display({
   subsets: ["latin"],

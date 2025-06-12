@@ -1,14 +1,15 @@
 "use client"
 
-import "../../styles/landing/hero-section.css"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import "../../styles/landing/hero-section.css"
 
-export default function HeroSection() {
+// MODIFICATION: Accept props to pass down the data-section-id
+export default function HeroSection(props) {
   return (
-    <section id="hero" className="relative w-full h-[calc(100vh-4rem)] overflow-hidden">
+    <section id="hero" className="relative w-full h-screen overflow-hidden" {...props}>
       <video
         src="/video/food.mp4"
         autoPlay
@@ -17,8 +18,7 @@ export default function HeroSection() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
       />
-      <div className="absolute inset-0 bg-black/50 z-10" />
-      <div className="relative z-20 container mx-auto flex flex-col items-center justify-center h-full text-center px-4 md:px-6">
+      <div className="relative z-20 container mx-auto flex flex-col items-center justify-center h-full text-center px-4 md:px-6 pt-16 sm:pt-20">
         <motion.h1
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}

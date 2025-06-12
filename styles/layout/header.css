@@ -1,74 +1,83 @@
 /* Styles for Header */
 .header-container {
-  @apply sticky top-0 z-50 w-full backdrop-blur-md shadow-sm px-4 sm:px-6 py-2 bg-neutral-800;
-  /* background-attachment: fixed; /* Optional: if you want parallax effect for header bg */
+  @apply sticky top-0 z-50 w-full px-4 sm:px-6 shadow-lg border-t-2 py-1 sm:py-1.5;
+  /* Using CSS variables for dynamic colors */
+  transition: background-color 0.4s ease, border-top-color 0.4s ease;
+  background-color: var(--header-bg, #f0ad4e); /* Default: Warm Orange */
+  border-top-color: var(--header-border, #1a202c); /* Default: Very Dark Gray */
 }
 
-.header-logo-link {
-  @apply flex items-center;
-}
-
-/* Circular frame for the logo */
 .logo-frame {
-  @apply w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-neutral-700/75 border-2 border-amber-500 shadow-md flex items-center justify-center overflow-hidden p-1 transition-all duration-300 ease-in-out;
+  @apply w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full bg-white border-2 shadow-md flex items-center justify-center overflow-hidden p-0.5 transition-all duration-300 ease-in-out relative;
+  @apply border-amber-600 dark:border-amber-500;
 }
+
 .logo-frame:hover {
-  @apply shadow-lg border-amber-400 scale-105;
-}
-
-.header-actual-logo {
-  @apply object-contain w-full h-full;
-}
-
-/* Frame for mobile logo in sheet menu */
-.mobile-logo-frame {
-  @apply w-28 h-28 rounded-full bg-neutral-700/50 border-2 border-amber-500 shadow-md flex items-center justify-center overflow-hidden p-1 mx-auto; /* Centered for mobile menu */
-}
-
-.header-nav {
-  @apply hidden items-center gap-4 md:gap-6 md:flex;
+  @apply shadow-lg scale-105 border-amber-500 dark:border-amber-400;
 }
 
 .header-nav-link {
-  @apply text-sm font-medium text-gray-200 hover:text-amber-400 transition-colors relative; /* Light text */
-  padding-bottom: 4px;
+  @apply text-xs sm:text-sm font-medium relative;
+  padding-bottom: 2px;
+  color: var(--header-text, #2d3748); /* Default: Dark Gray */
+  transition: color 0.4s ease;
+}
+
+.header-nav-link:hover {
+  color: var(--header-text-hover, #1a202c); /* Default: Darker Gray */
 }
 
 .header-nav-link::after {
   content: "";
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 50%;
+  @apply absolute w-0 h-[2px] bottom-0 left-1/2 transition-all duration-300 ease-in-out;
   transform: translateX(-50%);
-  background-color: #f59e0b; /* amber-500 */
-  transition: width 0.3s ease-in-out;
+  background-color: var(--header-text-hover, #1a202c); /* Default: Darker Gray */
 }
 
 .header-nav-link:hover::after {
-  width: 100%;
+  @apply w-full;
 }
 
 .mobile-menu-trigger {
-  @apply border-neutral-600 hover:bg-neutral-700; /* Darker outline button */
+  @apply border-transparent bg-transparent;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-menu-trigger:hover {
+  background-color: var(--header-hover-overlay, rgba(0, 0, 0, 0.1)); /* Default: Slight dark overlay */
 }
 
 .mobile-menu-icon {
-  @apply h-5 w-5 sm:h-6 sm:w-6 text-gray-300; /* Light icon */
+  color: var(--header-text, #2d3748); /* Default: Dark Gray */
+  transition: color 0.4s ease;
 }
 
 .mobile-sheet-content {
-  @apply bg-neutral-800 text-gray-200; /* Dark sheet background */
+  @apply bg-white dark:bg-neutral-800 text-neutral-800 dark:text-gray-200;
 }
 
 .mobile-nav-link {
-  @apply block py-2 text-sm sm:text-base font-medium text-gray-300 hover:text-amber-400 transition-colors;
+  @apply block py-2 text-sm font-medium text-neutral-700 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors;
+}
+
+.header-reserve-button,
+.header-reserve-button-mobile {
+  @apply font-semibold text-[11px] sm:text-xs shadow-md;
+  background-color: var(--header-bg, #f0ad4e); /* Default: Warm Orange */
+  color: var(--header-text, #2d3748); /* Default: Dark Gray */
+  border: 1px solid var(--header-btn-border, #d97706); /* Default: Darker Orange */
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 
 .header-reserve-button {
-  @apply bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2;
+  @apply px-2.5 py-1 sm:px-3 sm:py-1.5;
 }
 .header-reserve-button-mobile {
-  @apply bg-amber-500 hover:bg-amber-600 text-white p-2 border-none;
+  @apply p-1.5;
+}
+
+.header-reserve-button:hover,
+.header-reserve-button-mobile:hover {
+  background-color: var(--header-bg-hover, #e69500); /* Default: Slightly darker orange */
+  border-color: var(--header-btn-border-hover, #c76b00); /* Default: Even darker orange */
 }

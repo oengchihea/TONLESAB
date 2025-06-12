@@ -1,18 +1,17 @@
 /* Styles for HeroSection */
 .hero-title {
-  @apply text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-amber-400; /* Removed xs, sm is the first breakpoint */
+  @apply text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-amber-400;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 .hero-subtitle {
-  @apply mt-4 sm:mt-6 max-w-md sm:max-w-lg md:max-w-2xl text-sm sm:text-lg md:text-xl leading-relaxed sm:leading-8 text-gray-200; /* Removed xs */
+  @apply mt-4 sm:mt-6 max-w-md sm:max-w-lg md:max-w-2xl text-sm sm:text-lg md:text-xl leading-relaxed sm:leading-8 text-gray-200;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .hero-discover-button {
   @apply bg-amber-500 hover:bg-amber-600 text-white text-sm sm:text-base px-6 py-2.5 sm:px-8 sm:py-3;
 }
-
 .hero-discover-button:hover {
   animation: pulse-amber 1.5s infinite;
 }

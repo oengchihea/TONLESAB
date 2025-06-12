@@ -1,9 +1,15 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import "../../styles/landing/gallery-section.css"
 import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
+
+// Create a custom event that will be triggered when scrolling past the gallery section
+const triggerNavbarChange = () => {
+  const event = new CustomEvent("navbarColorChange", { detail: { scrolled: true } })
+  window.dispatchEvent(event)
+}
 
 const galleryData = [
   {
@@ -52,46 +58,51 @@ const galleryData = [
       },
     ],
   },
-  {
-    category: "Authentic Ambiance",
-    slug: "authentic-ambiance",
-    items: [
-      {
-        id: "aa1",
-        title: "Warm & Welcoming",
-        description: "Traditional Khmer hospitality with local art and silk tapestries.",
-        location: "Main Dining Hall",
-        established: "Interior Design 2015",
-        featuredImage: "/images/cocktail.jpg",
-        thumbnails: ["/images/come.jpg", "/images/visit.jpg"],
-      },
-    ],
-  },
 ]
 
-export default function GallerySection() {
+export default function GallerySection({ ...props }) {
   const [activeCategorySlug, setActiveCategorySlug] = useState(galleryData[0].slug)
   const activeCategoryData = galleryData.find((cat) => cat.slug === activeCategorySlug)
+  const sectionRef = useRef(null)
 
   const activeCategoryItems = activeCategoryData?.items || []
   const showHorizontalScroll = activeCategoryItems.length > 1
 
   const galleryScrollContainerRef = useRef(null)
+  const PIN_PAGES = 4
   const { scrollYProgress } = useScroll({
     target: galleryScrollContainerRef,
-    offset: ["start start", "end end"],
+    offset: ["start start", "end start"],
     disabled: !showHorizontalScroll,
   })
+
+  // Add scroll event listener to check when we've scrolled past the gallery section
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return
+
+      const rect = sectionRef.current.getBoundingClientRect()
+      // If the top of the gallery section is above the viewport, trigger navbar change
+      if (rect.top <= 0) {
+        triggerNavbarChange()
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
 
   const x = useTransform(
     scrollYProgress,
     [0, 1],
-    showHorizontalScroll ? ["0%", `-${(activeCategoryItems.length - 1) * 100}%`] : ["0%", "0%"],
+    showHorizontalScroll ? ["0%", `-${(PIN_PAGES - 1) * 100}%`] : ["0%", "0%"],
   )
 
   const sectionEntryVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   }
 
   const GalleryItemContent = ({ item, index, priority = false }) => (
@@ -100,11 +111,11 @@ export default function GallerySection() {
         <h3 className="gallery-item-title">{item.title.toUpperCase()}</h3>
         <p className="gallery-item-description">{item.description}</p>
         <div className="gallery-item-meta">
-          <div>
+          <div className="gallery-meta-item">
             <span className="gallery-item-meta-label">Location</span>
             <span className="gallery-item-meta-value">{item.location}</span>
           </div>
-          <div>
+          <div className="gallery-meta-item">
             <span className="gallery-item-meta-label">Established</span>
             <span className="gallery-item-meta-value">{item.established}</span>
           </div>
@@ -126,8 +137,8 @@ export default function GallerySection() {
             <motion.div
               key={thumbIndex}
               className="gallery-thumbnail-container"
-              whileHover={{ scale: 1.1, borderColor: "var(--amber-500)" }}
-              transition={{ type: "spring", stiffness: 300 }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <Image
                 src={thumbUrl || "/placeholder.svg?width=150&height=150&query=Gallery+Thumbnail"}
@@ -140,76 +151,68 @@ export default function GallerySection() {
           ))}
         </div>
       </div>
-      <div className="gallery-faded-number-horizontal">{`0${index + 1}`}</div>
+      <div className="gallery-faded-number">{`0${index + 1}`}</div>
     </div>
   )
 
   return (
     <motion.section
-      id="gallery-section-main"
+      id="gallery"
+      ref={sectionRef}
+      {...props}
       className="gallery-section-wrapper"
       variants={sectionEntryVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
     >
-      <div className="gallery-title-container">
-        <span className="gallery-title-our">OUR</span>
-        <span className="gallery-title-gallery">GALLERY</span>
-      </div>
-
-      <div className="gallery-filter-tabs-container">
-        <div className="gallery-filter-tabs">
-          {galleryData.map((cat) => (
-            <motion.button
-              key={cat.slug}
-              onClick={() => setActiveCategorySlug(cat.slug)}
-              className={`gallery-filter-button ${activeCategorySlug === cat.slug ? "gallery-filter-button-active" : ""}`}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              {cat.category.toUpperCase()}
-            </motion.button>
-          ))}
+      <div className="gallery-header">
+        <div className="gallery-title-container">
+          <span className="gallery-title-our">OUR</span>
+          <span className="gallery-title-gallery">GALLERY</span>
         </div>
-      </div>
 
-      {showHorizontalScroll ? (
-        <div
-          ref={galleryScrollContainerRef}
-          className="gallery-horizontal-scroll-container"
-          style={{ height: `${activeCategoryItems.length * 100}vh` }}
-        >
-          <div className="gallery-sticky-viewport">
-            <motion.div
-              className="gallery-items-strip"
-              style={{
-                x,
-                width: `${activeCategoryItems.length * 100}%`,
-              }}
-            >
-              {activeCategoryItems.map((item, index) => (
-                <div key={`${item.id}-${activeCategorySlug}`} className="gallery-single-item-slide">
-                  <GalleryItemContent item={item} index={index} priority={index === 0} />
-                </div>
-              ))}
-            </motion.div>
+        <div className="gallery-filter-tabs-container">
+          <div className="gallery-filter-tabs">
+            {galleryData.map((cat) => (
+              <motion.button
+                key={cat.slug}
+                onClick={() => setActiveCategorySlug(cat.slug)}
+                className={`gallery-filter-button ${activeCategorySlug === cat.slug ? "active" : ""}`}
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              >
+                {cat.category.toUpperCase()}
+              </motion.button>
+            ))}
           </div>
         </div>
-      ) : (
-        <div className="gallery-static-item-wrapper">
-          {activeCategoryItems.length === 1 ? (
-            <div className="gallery-single-item-slide">
-              <GalleryItemContent item={activeCategoryItems[0]} index={0} priority />
-            </div>
-          ) : (
-            <div className="gallery-single-item-slide">
-              <p className="text-center text-xl text-[var(--light-text-color)]">No items in this category.</p>
-            </div>
-          )}
+      </div>
+
+      <div ref={galleryScrollContainerRef} className="gallery-horizontal-scroll-container" style={{ height: "400vh" }}>
+        <div className="gallery-sticky-viewport">
+          <motion.div
+            className="gallery-items-strip"
+            style={{
+              x,
+              width: `${activeCategoryItems.length * 35}%`,
+            }}
+          >
+            {activeCategoryItems.length >= 4 ? (
+              activeCategoryItems.slice(0, 4).map((item, index) => (
+                <div key={item.id} className="gallery-single-item-slide">
+                  <GalleryItemContent item={item} index={index} priority={index === 0} />
+                </div>
+              ))
+            ) : (
+              <div className="gallery-single-item-slide">
+                <p className="gallery-empty-message">Not enough items to display the gallery.</p>
+              </div>
+            )}
+          </motion.div>
         </div>
-      )}
+      </div>
     </motion.section>
   )
 }

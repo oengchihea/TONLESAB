@@ -12,6 +12,12 @@
   margin-bottom: 1.5rem;
 }
 
+.dark .embedded-marquee-container {
+  background-color: rgba(51, 38, 20, 0.6); /* Example dark mode background: dark amber/brownish */
+  border-top-color: rgba(180, 83, 9, 0.4); /* amber-700 with opacity */
+  border-bottom-color: rgba(180, 83, 9, 0.4); /* amber-700 with opacity */
+}
+
 .embedded-marquee-container.pause-on-hover:hover .embedded-marquee-content {
   animation-play-state: paused;
 }
@@ -19,7 +25,16 @@
 .embedded-marquee-content {
   display: inline-block;
   will-change: transform;
+  /* animation: marquee-scroll 20s linear infinite; You might need to define this animation if it's not global */
 }
+
+/* If you have a specific animation for this marquee, ensure it's defined.
+   For example:
+@keyframes marquee-scroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+*/
 
 .embedded-marquee-item {
   display: inline-block;
@@ -29,4 +44,8 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.dark .embedded-marquee-item {
+  color: #fcd34d; /* amber-300 for dark mode */
 }

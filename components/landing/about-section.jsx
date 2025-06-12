@@ -3,8 +3,8 @@
 import React from "react"
 import { motion } from "framer-motion"
 import { Waves, Fish, Users } from "lucide-react"
-import Marquee from "../ui/marquee"
-import CssRotatingCube from "./css-rotating-cube"
+import Marquee from "../ui/marquee" // Assuming this path is correct
+import CssRotatingCube from "./css-rotating-cube" // Assuming this path is correct
 
 const features = [
   {
@@ -32,7 +32,8 @@ const aboutMarqueeItems = [
   "Heart of Cambodia",
 ]
 
-export default function AboutSection() {
+// MODIFICATION: Accept props to pass down the data-section-id
+export default function AboutSection(props) {
   const sectionVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -50,10 +51,12 @@ export default function AboutSection() {
   }
 
   return (
+    // MODIFICATION: Spread props onto the section element
     <section
       id="about"
       className="relative overflow-hidden pt-0 pb-24 md:pb-32 before:content-[''] before:absolute before:inset-0 before:bg-cover before:bg-center before:bg-fixed before:z-0 after:content-[''] after:absolute after:inset-0 after:z-[1] after:bg-gradient-to-b after:from-black/50 after:via-black/30 after:to-black/50"
       style={{ "--bg-image-url": "url('/images/about.jpg')" }}
+      {...props} // Apply data-section-id here
     >
       <style jsx global>{`
         #about::before {
@@ -61,6 +64,18 @@ export default function AboutSection() {
         }
       `}</style>
 
+      {/* MOVED MARQUEE BLOCK HERE */}
+      <motion.div
+        className="w-full relative z-[2] mt-0 mb-8 sm:mb-10" // Adjusted margins for new position
+        variants={itemVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+      >
+        <Marquee items={aboutMarqueeItems} speed={30} />
+      </motion.div>
+
+      {/* TITLE/SUBTITLE BLOCK */}
       <motion.div
         className="container relative z-[2] mx-auto px-4 md:px-6"
         initial="hidden"
@@ -68,7 +83,9 @@ export default function AboutSection() {
         viewport={{ once: true, amount: 0.2 }}
         variants={sectionVariants}
       >
-        <motion.div variants={itemVariants} className="text-center pt-12 md:pt-16">
+        <motion.div variants={itemVariants} className="text-center">
+          {" "}
+          {/* Removed pt-12 md:pt-16 as marquee is now above */}
           <h2
             className="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-amber-400"
             style={{ textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6), 0 0 10px rgba(251, 191, 36, 0.3)" }}
@@ -85,18 +102,10 @@ export default function AboutSection() {
         </motion.div>
       </motion.div>
 
+      {/* FEATURES/CUBE BLOCK (remains after title/subtitle) */}
+      {/* Add some top margin to this block if needed after moving marquee */}
       <motion.div
-        className="w-full relative z-[2] my-10 sm:my-14"
-        variants={itemVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-      >
-        <Marquee items={aboutMarqueeItems} speed={30} />
-      </motion.div>
-
-      <motion.div
-        className="container relative z-[2] mx-auto px-4 md:px-6"
+        className="container relative z-[2] mx-auto px-4 md:px-6 mt-10 sm:mt-14" // Added margin-top
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}

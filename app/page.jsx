@@ -1,3 +1,4 @@
+// This is your HomePage component
 import Header from "../components/layout/header"
 import HeroSection from "../components/landing/hero-section"
 import AboutSection from "../components/landing/about-section"
@@ -12,12 +13,13 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
       <main className="flex-grow">
-        <HeroSection />
-        <AboutSection />
-        <MenuSection />
-        <GallerySection />
-        <TestimonialsSection />
-        <ContactSection />
+        {/* MODIFICATION: Ensured data-section-id is passed to all sections */}
+        <HeroSection data-section-id="hero" />
+        <AboutSection data-section-id="about" />
+        <MenuSection data-section-id="menu" />
+        <GallerySection data-section-id="gallery" />
+        <TestimonialsSection data-section-id="testimonials" />
+        <ContactSection data-section-id="contact" />
       </main>
       <Footer />
     </div>
