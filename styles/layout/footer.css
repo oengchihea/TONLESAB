@@ -1,0 +1,65 @@
+/* Styles for Footer */
+.footer-container {
+  @apply text-gray-300 py-8 sm:py-12 px-4 sm:px-6 relative bg-neutral-800;
+}
+.footer-container .container {
+  @apply px-0 relative z-10;
+}
+
+.footer-logo-link {
+  @apply flex items-center gap-2 mb-3 sm:mb-4;
+}
+
+/* Circular frame for the footer logo */
+.footer-logo-frame {
+  @apply w-16 h-16 rounded-full bg-neutral-700/75 border-2 border-amber-500 shadow-md flex items-center justify-center overflow-hidden p-1 transition-all duration-300 ease-in-out;
+  /* You can add hover effects if desired, e.g.:
+  hover:shadow-lg hover:border-amber-400 hover:scale-105;
+  */
+}
+
+.footer-actual-logo {
+  /* Ensure the logo image scales nicely within the frame */
+  @apply object-contain w-full h-full;
+}
+
+.footer-description {
+  @apply text-sm text-gray-300;
+}
+
+.footer-heading {
+  @apply font-playfair text-base sm:text-lg font-semibold text-gray-100 mb-3 sm:mb-4;
+}
+
+.footer-link-list {
+  @apply space-y-1.5 sm:space-y-2;
+}
+
+.footer-link {
+  @apply hover:text-amber-400 transition-colors text-sm text-gray-300;
+}
+
+.footer-social-icons {
+  @apply flex space-x-3 sm:space-x-4;
+}
+
+.footer-social-icon-link {
+  @apply text-gray-300 hover:text-amber-400 transition-transform duration-200 ease-in-out p-1;
+}
+.footer-social-icon-link .lucide {
+  @apply h-5 w-5 sm:h-6 sm:w-6;
+}
+.footer-social-icon-link:hover {
+  transform: translateY(-2px) scale(1.1);
+}
+
+.footer-copyright {
+  @apply border-t border-neutral-700 pt-6 sm:pt-8 text-center text-xs sm:text-sm text-gray-400;
+}
+
+.footer-grid-container {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8;
+}
+.footer-grid-container > div {
+  @apply mb-4 md:mb-0;
+}

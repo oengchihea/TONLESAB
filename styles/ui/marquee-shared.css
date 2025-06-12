@@ -1,0 +1,32 @@
+/* Shared styles for embedded marquees - Will only be used by AboutSection now */
+.embedded-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: 0.75rem 0; /* py-3 */
+  background-color: rgba(255, 251, 235, 0.6); /* Slightly transparent amber-50 for light theme */
+  border-top: 1px solid rgba(252, 211, 77, 0.3); /* amber-300 with opacity */
+  border-bottom: 1px solid rgba(252, 211, 77, 0.3); /* amber-300 with opacity */
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.embedded-marquee-container.pause-on-hover:hover .embedded-marquee-content {
+  animation-play-state: paused;
+}
+
+.embedded-marquee-content {
+  display: inline-block;
+  will-change: transform;
+}
+
+.embedded-marquee-item {
+  display: inline-block;
+  padding: 0 2rem;
+  font-size: 0.95rem;
+  color: #b45309; /* amber-700 for good contrast */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

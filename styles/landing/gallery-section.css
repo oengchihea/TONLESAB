@@ -1,0 +1,168 @@
+/* Styles for the GallerySection */
+:root {
+  --amber-500: #f59e0b;
+  --amber-700: #b45309;
+  --light-text-color: #f8f9fa; /* A very light gray, almost white */
+  --light-text-secondary-color: #e9ecef; /* Slightly darker for less emphasis */
+}
+
+.gallery-section-wrapper {
+  @apply py-12 sm:py-16 md:py-24 relative;
+  background-image: url("/images/background-image.jpg"); /* Using the dark background image */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.gallery-title-container,
+.gallery-filter-tabs-container,
+.gallery-horizontal-scroll-container {
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-title-container {
+  @apply text-center mb-8 sm:mb-12;
+}
+
+.gallery-title-our {
+  @apply block font-playfair text-2xl sm:text-3xl md:text-4xl mb-0 sm:mb-1;
+  color: var(--light-text-color); /* Light color for "OUR" */
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-title-gallery {
+  @apply block font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-amber-500;
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-filter-tabs-container {
+  @apply w-full overflow-x-auto pb-2 mb-8 sm:mb-12;
+}
+.gallery-filter-tabs-container::-webkit-scrollbar {
+  height: 4px;
+}
+.gallery-filter-tabs-container::-webkit-scrollbar-thumb {
+  @apply bg-amber-400 rounded-[10px];
+}
+
+.gallery-filter-tabs {
+  @apply flex justify-start sm:justify-center space-x-2 sm:space-x-4 min-w-max sm:min-w-0 px-1;
+}
+
+.gallery-filter-button {
+  @apply font-lato text-xs whitespace-nowrap sm:text-sm font-medium py-2 px-3 sm:px-4 md:px-6 rounded-md border-2 transition-all duration-300;
+  border-color: var(--amber-500); /* Amber border for inactive */
+  color: var(--amber-500); /* Amber text for inactive */
+  background-color: rgba(0, 0, 0, 0.2); /* Darker semi-transparent background for buttons */
+  backdrop-filter: blur(3px);
+}
+
+.gallery-filter-button-active {
+  @apply bg-amber-500 border-amber-500;
+  color: white !important; /* Ensure active button text is white */
+  backdrop-filter: none;
+}
+
+.gallery-filter-button:not(.gallery-filter-button-active):hover {
+  background-color: rgba(var(--amber-500-rgb), 0.2); /* Use amber-500 with opacity on hover */
+  border-color: var(--amber-500);
+  color: var(--amber-500);
+}
+
+.gallery-horizontal-scroll-container {
+  @apply relative;
+}
+
+.gallery-sticky-viewport {
+  @apply sticky top-0 h-screen overflow-hidden;
+}
+
+.gallery-items-strip {
+  @apply flex h-full;
+}
+
+.gallery-single-item-slide {
+  @apply w-full h-full flex-shrink-0 flex items-center justify-center p-4 md:p-8 relative;
+  width: 100vw;
+}
+
+.gallery-single-item-slide .gallery-item-display {
+  @apply w-full max-w-6xl mx-auto;
+}
+
+.gallery-item-display {
+  @apply grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 md:gap-8 items-center;
+}
+
+.gallery-featured-image-wrapper {
+  @apply lg:col-span-5 xl:col-span-4 rounded-lg overflow-hidden shadow-xl border-2 border-white/20; /* Subtle border for definition */
+}
+
+.gallery-featured-image {
+  @apply w-full h-auto object-cover aspect-[4/3] sm:aspect-[16/10] md:aspect-[5/4];
+}
+
+.gallery-item-text-content {
+  @apply lg:col-span-4 xl:col-span-5 py-4 order-first lg:order-none;
+}
+
+/* General light text color for content */
+.gallery-item-title,
+.gallery-item-description,
+.gallery-item-meta-value {
+  color: var(--light-text-color);
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7), 0 0 5px rgba(0, 0, 0, 0.5); /* Stronger shadow for dark bg */
+}
+
+.gallery-item-description {
+  color: var(--light-text-secondary-color); /* Slightly less emphasis for description */
+}
+
+.gallery-item-title {
+  @apply font-playfair text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4;
+}
+
+.gallery-item-description {
+  @apply font-lato text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed;
+}
+
+.gallery-item-meta {
+  @apply space-y-1 sm:space-y-2 text-sm;
+}
+
+.gallery-item-meta-label {
+  @apply block font-lato text-[0.7rem] sm:text-xs uppercase tracking-wider;
+  color: var(--amber-500); /* Keep labels in accent color */
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-thumbnails-wrapper {
+  @apply lg:col-span-3 xl:col-span-3 flex flex-col justify-center items-center lg:items-end w-full mt-4 lg:mt-0;
+}
+
+.gallery-thumbnail-grid {
+  @apply grid grid-cols-4 lg:grid-cols-2 gap-2 p-1.5 sm:p-2 rounded-md w-full max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-[200px] xl:max-w-[240px];
+  background-color: rgba(40, 40, 40, 0.5); /* Darker semi-transparent background for thumbnail area */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+.gallery-thumbnail-container {
+  @apply border-2 border-transparent rounded-md overflow-hidden;
+}
+.gallery-thumbnail-container:hover {
+  border-color: var(--amber-500);
+}
+
+.gallery-thumbnail {
+  @apply w-full h-auto object-cover rounded aspect-square cursor-pointer;
+}
+
+.gallery-faded-number-horizontal {
+  @apply absolute bottom-8 right-8 
+  text-[6rem] sm:text-[8rem] md:text-[10rem]
+  font-playfair font-bold -z-10 select-none leading-none;
+  color: rgba(245, 158, 11, 0.15); /* Amber-500 with very low opacity */
+  text-shadow: none; /* Remove shadow from faded number if it's too much */
+}

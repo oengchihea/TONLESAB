@@ -1,0 +1,74 @@
+/* Styles for Header */
+.header-container {
+  @apply sticky top-0 z-50 w-full backdrop-blur-md shadow-sm px-4 sm:px-6 py-2 bg-neutral-800;
+  /* background-attachment: fixed; /* Optional: if you want parallax effect for header bg */
+}
+
+.header-logo-link {
+  @apply flex items-center;
+}
+
+/* Circular frame for the logo */
+.logo-frame {
+  @apply w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-neutral-700/75 border-2 border-amber-500 shadow-md flex items-center justify-center overflow-hidden p-1 transition-all duration-300 ease-in-out;
+}
+.logo-frame:hover {
+  @apply shadow-lg border-amber-400 scale-105;
+}
+
+.header-actual-logo {
+  @apply object-contain w-full h-full;
+}
+
+/* Frame for mobile logo in sheet menu */
+.mobile-logo-frame {
+  @apply w-28 h-28 rounded-full bg-neutral-700/50 border-2 border-amber-500 shadow-md flex items-center justify-center overflow-hidden p-1 mx-auto; /* Centered for mobile menu */
+}
+
+.header-nav {
+  @apply hidden items-center gap-4 md:gap-6 md:flex;
+}
+
+.header-nav-link {
+  @apply text-sm font-medium text-gray-200 hover:text-amber-400 transition-colors relative; /* Light text */
+  padding-bottom: 4px;
+}
+
+.header-nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f59e0b; /* amber-500 */
+  transition: width 0.3s ease-in-out;
+}
+
+.header-nav-link:hover::after {
+  width: 100%;
+}
+
+.mobile-menu-trigger {
+  @apply border-neutral-600 hover:bg-neutral-700; /* Darker outline button */
+}
+
+.mobile-menu-icon {
+  @apply h-5 w-5 sm:h-6 sm:w-6 text-gray-300; /* Light icon */
+}
+
+.mobile-sheet-content {
+  @apply bg-neutral-800 text-gray-200; /* Dark sheet background */
+}
+
+.mobile-nav-link {
+  @apply block py-2 text-sm sm:text-base font-medium text-gray-300 hover:text-amber-400 transition-colors;
+}
+
+.header-reserve-button {
+  @apply bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2;
+}
+.header-reserve-button-mobile {
+  @apply bg-amber-500 hover:bg-amber-600 text-white p-2 border-none;
+}

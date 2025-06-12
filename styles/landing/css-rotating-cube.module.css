@@ -1,0 +1,56 @@
+.scene {
+  width: 200px; /* Increased size for better image visibility */
+  height: 200px;
+  perspective: 800px; /* Increased perspective for a more dramatic 3D effect */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: rotateCube 20s infinite linear; /* Slightly slower rotation */
+}
+
+.cubeFace {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* Use the about.jpg image as the background for each face */
+  background-image: url("/images/food.jpg");
+  background-size: cover; /* Ensure the image covers the entire face */
+  background-position: center; /* Center the image on the face */
+  border: 2px solid rgba(255, 255, 255, 0.15); /* A subtle border to define the edges */
+}
+
+/* Position each face */
+.front {
+  transform: rotateY(0deg) translateZ(100px); /* Half of new width/height */
+}
+.back {
+  transform: rotateY(180deg) translateZ(100px);
+}
+.right {
+  transform: rotateY(90deg) translateZ(100px);
+}
+.left {
+  transform: rotateY(-90deg) translateZ(100px);
+}
+.top {
+  transform: rotateX(90deg) translateZ(100px);
+}
+.bottom {
+  transform: rotateX(-90deg) translateZ(100px);
+}
+
+@keyframes rotateCube {
+  from {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}

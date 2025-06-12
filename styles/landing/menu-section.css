@@ -1,0 +1,69 @@
+/* Styles for MenuSection */
+.menu-section-container {
+  @apply relative py-16 md:py-24 overflow-hidden;
+  background-image: url("/images/menu.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.menu-section-overlay {
+  @apply absolute inset-0 bg-black/60 z-0;
+}
+
+.menu-section-title {
+  @apply font-playfair text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-center text-amber-400 mb-3 sm:mb-4;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+.menu-section-subtitle {
+  @apply mt-2 max-w-lg md:max-w-2xl mx-auto text-center text-sm sm:text-base md:text-lg text-gray-200 mb-10 sm:mb-16;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.menu-category-title {
+  @apply font-playfair text-2xl sm:text-3xl font-semibold text-amber-300 mt-8 sm:mt-10 mb-6 sm:mb-8 border-b-2 border-amber-500/50 pb-3;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.menu-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 sm:gap-x-8 sm:gap-y-10;
+}
+
+.menu-item-card {
+  @apply bg-white/10 backdrop-blur-md rounded-xl shadow-xl overflow-hidden transition-all duration-300 ease-out flex flex-col border border-white/20;
+}
+
+.menu-item-card:hover {
+  @apply shadow-amber-400/30;
+}
+
+.menu-item-image-wrapper {
+  @apply w-full h-52 sm:h-60 md:h-64 overflow-hidden rounded-t-xl;
+}
+
+.menu-item-image {
+  @apply w-full h-full object-cover transition-transform duration-300 ease-in-out;
+}
+
+.menu-item-card:hover .menu-item-image {
+  transform: scale(1.08);
+}
+
+.menu-item-content {
+  @apply p-5 sm:p-6 flex flex-col flex-grow;
+}
+
+.menu-item-name {
+  @apply font-playfair text-xl sm:text-2xl font-semibold text-amber-300 mb-2;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.menu-item-description {
+  @apply text-sm text-gray-300 mb-3 sm:mb-4 flex-grow leading-relaxed;
+}
+
+.menu-item-price {
+  @apply text-lg sm:text-xl font-bold text-amber-400 mt-auto;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
