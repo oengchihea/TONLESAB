@@ -13,9 +13,6 @@
 /* Circular frame for the footer logo */
 .footer-logo-frame {
   @apply w-16 h-16 rounded-full bg-neutral-700/75 border-2 border-amber-500 shadow-md flex items-center justify-center overflow-hidden p-1 transition-all duration-300 ease-in-out;
-  /* You can add hover effects if desired, e.g.:
-  hover:shadow-lg hover:border-amber-400 hover:scale-105;
-  */
 }
 
 .footer-actual-logo {
@@ -58,8 +55,16 @@
 }
 
 .footer-grid-container {
-  @apply grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8;
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8;
 }
 .footer-grid-container > div {
   @apply mb-4 md:mb-0;
+}
+
+.footer-contact-item {
+  @apply flex items-start gap-3 py-1;
+}
+
+.footer-contact-item .lucide {
+  @apply text-amber-500 w-4 h-4 mt-0.5 flex-shrink-0;
 }

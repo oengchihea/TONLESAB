@@ -84,22 +84,3 @@ text-sm sm:text-base p-2.5 sm:p-3;
 .success-message-dark {
   @apply md:col-span-2 p-2.5 sm:p-3 my-2 text-center text-sm text-green-300 bg-green-800 bg-opacity-50 border border-green-600 rounded-md;
 }
-
-.contact-info-container {
-  @apply mt-8 sm:mt-12 text-center;
-}
-
-.contact-info-title {
-  @apply font-playfair text-lg sm:text-xl font-semibold text-gray-100 mb-2 sm:mb-3; /* Light text */
-}
-
-.contact-info-item {
-  @apply flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base text-gray-300 transition-colors duration-200 py-1; /* Light gray text */
-}
-.contact-info-item:hover,
-.contact-info-item:hover a {
-  @apply text-amber-400; /* Lighter amber for hover */
-}
-.contact-info-item .lucide {
-  @apply text-amber-500 w-4 h-4 sm:w-5 sm:h-5; /* Brighter amber icon */
-}

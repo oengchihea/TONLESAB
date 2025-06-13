@@ -3,7 +3,7 @@
 import "../../styles/layout/footer.css"
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Instagram, Twitter } from "lucide-react"
+import { Facebook, Instagram, Twitter, Mail, PhoneIcon } from "lucide-react"
 import { motion } from "framer-motion"
 
 const FooterLogo = ({ size = 60 }) => (
@@ -56,6 +56,23 @@ export default function Footer() {
                 <Link href="#" className="footer-link" prefetch={false}>
                   Privacy Policy
                 </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="footer-heading">Contact Us</h3>
+            <ul className="footer-link-list">
+              <li className="footer-contact-item">
+                <Mail />
+                <a href="mailto:info@tonlesabjourneys.com" className="footer-link">
+                  info@tonlesabjourneys.com
+                </a>
+              </li>
+              <li className="footer-contact-item">
+                <PhoneIcon />
+                <a href="tel:+85512345678" className="footer-link">
+                  +855 12 345 678
+                </a>
               </li>
             </ul>
           </div>

@@ -241,20 +241,6 @@ export default function ContactSection() {
             </Button>
           </form>
         </motion.div>
-
-        <motion.div variants={itemVariants} className="contact-info-container">
-          <h3 className="contact-info-title">Or Reach Us Directly</h3>
-          <div className="space-y-2">
-            <div className="contact-info-item">
-              <Mail />
-              <a href="mailto:info@tonlesabjourneys.com">info@tonlesabjourneys.com</a>
-            </div>
-            <div className="contact-info-item">
-              <PhoneIcon />
-              <a href="tel:+85512345678">+855 12 345 678</a>
-            </div>
-          </div>
-        </motion.div>
       </motion.div>
     </section>
   )
