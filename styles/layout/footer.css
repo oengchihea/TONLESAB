@@ -10,9 +10,9 @@
   @apply flex items-center gap-2 mb-3 sm:mb-4;
 }
 
-/* Circular frame for the footer logo */
+/* Updated Circular frame for the footer logo to match header's white background */
 .footer-logo-frame {
-  @apply w-16 h-16 rounded-full bg-neutral-700/75 border-2 border-amber-500 shadow-md flex items-center justify-center overflow-hidden p-1 transition-all duration-300 ease-in-out;
+  @apply w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-amber-500 shadow-md flex items-center justify-center overflow-hidden p-1 transition-all duration-300 ease-in-out;
 }
 
 .footer-actual-logo {

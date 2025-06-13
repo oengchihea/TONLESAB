@@ -3,7 +3,7 @@
 import "../../styles/layout/footer.css"
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Instagram, Twitter, Mail, PhoneIcon } from "lucide-react"
+import { Facebook, Mail, PhoneIcon, MapPin } from "lucide-react"
 import { motion } from "framer-motion"
 
 const FooterLogo = ({ size = 60 }) => (
@@ -79,20 +79,17 @@ export default function Footer() {
           <div>
             <h3 className="footer-heading">Follow Us</h3>
             <div className="footer-social-icons">
-              <Link href="#" className="footer-social-icon-link" prefetch={false} aria-label="Facebook">
+              <Link href="https://www.facebook.com/tonlesaprestaurant/" className="footer-social-icon-link" prefetch={false} aria-label="Facebook">
                 <Facebook className="h-6 w-6" />
               </Link>
-              <Link href="#" className="footer-social-icon-link" prefetch={false} aria-label="Instagram">
-                <Instagram className="h-6 w-6" />
-              </Link>
-              <Link href="#" className="footer-social-icon-link" prefetch={false} aria-label="Twitter">
-                <Twitter className="h-6 w-6" />
+              <Link href="https://www.google.com/maps/place/Tonle+Sap+Restaurant/@13.3671259,103.851429,548m/data=!3m1!1e3!4m6!3m5!1s0x3110176cc6f161a9:0x1693854b90636583!8m2!3d13.3658723!4d103.8523483!16s%2Fg%2F12644h7tn?entry=ttu&g_ep=EgoyMDI1MDYxMC4xIKXMDSoASAFQAw%3D%3D" className="footer-social-icon-link" prefetch={false} target="_blank" rel="noopener noreferrer" aria-label="Map to Tonle Sap Restaurant">
+                <MapPin className="h-6 w-6" />
               </Link>
             </div>
           </div>
         </div>
         <div className="footer-copyright">
-          <p>&copy; {new Date().getFullYear()} Tonle Sab Journeys. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Tonle Sab Journeys. All rights reserved.</p>
         </div>
       </div>
     </motion.footer>

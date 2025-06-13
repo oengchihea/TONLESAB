@@ -1594,7 +1594,7 @@
   }
 }
 
-/* Circular frame for the footer logo */
+/* Updated Circular frame for the footer logo to match header's white background */
 .footer-logo-frame {
   display: flex;
   height: 4rem;
@@ -1606,7 +1606,8 @@
   border-width: 2px;
   --tw-border-opacity: 1;
   border-color: rgb(245 158 11 / var(--tw-border-opacity, 1));
-  background-color: rgb(64 64 64 / 0.75);
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
   padding: 0.25rem;
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
@@ -1616,6 +1617,18 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   animation-duration: 300ms;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (min-width: 640px) {
+  .footer-logo-frame {
+    height: 5rem;
+    width: 5rem;
+  }
+}
+@media (min-width: 768px) {
+  .footer-logo-frame {
+    height: 6rem;
+    width: 6rem;
+  }
 }
 
 .footer-actual-logo {
@@ -1792,7 +1805,6 @@
   --tw-text-opacity: 1;
   color: rgb(245 158 11 / var(--tw-text-opacity, 1));
 }
-
 /*!**********************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./styles/layout/header.css ***!
   \**********************************************************************************************************************************************************************************************************************************************************************/
