@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { sendTelegramMessage } from '../../../lib/telegram'
 
 export async function POST(request) {
   try {
@@ -145,6 +146,25 @@ export async function POST(request) {
     } catch (notifyError) {
       console.error('Failed to send notification email to restaurant:', notifyError)
       // Continue to send confirmation email even if notification fails
+    }
+
+    // Send Telegram notification
+    try {
+      const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
+      const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
+      if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+        const telegramText = `🍽️ <b>New Reservation Received</b>\n\n<b>👤 Name:</b> ${name}\n<b>📞 Phone:</b> ${phone}\n<b>✉️ Email:</b> ${email}\n<b>📅 Date:</b> ${formattedDate}\n<b>⏰ Time:</b> ${formattedTime}\n<b>👥 Guests:</b> ${guests}\n<b>📝 Requests:</b> ${requests || 'None'}\n<b>🔑 Confirmation Code:</b> <code>${confirmationCode}</code>\n\n<em>Submitted via Tonle Sab Restaurant website</em>`
+        await sendTelegramMessage({
+          chatId: TELEGRAM_CHAT_ID,
+          text: telegramText,
+          botToken: TELEGRAM_BOT_TOKEN,
+        })
+      } else {
+        console.warn('TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set. Skipping Telegram notification.')
+      }
+    } catch (telegramError) {
+      console.error('Failed to send Telegram notification:', telegramError)
+      // Continue even if Telegram notification fails
     }
 
     // Send confirmation to customer
