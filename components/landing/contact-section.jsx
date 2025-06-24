@@ -7,7 +7,7 @@ import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
 import { Label } from "../ui/label"
-import { User, PhoneIcon, Mail, CalendarDays, Clock, Users, MessageSquare } from "lucide-react"
+import { User, PhoneIcon, Mail, CalendarDays, Clock, Users, MessageSquare, X } from "lucide-react"
 
 export default function ContactSection() {
   const today = new Date().toISOString().split("T")[0]
@@ -24,6 +24,8 @@ export default function ContactSection() {
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState("")
+  const [errorDetails, setErrorDetails] = useState("")
 
   const sectionVariants = {
     hidden: { opacity: 0 },
@@ -42,6 +44,8 @@ export default function ContactSection() {
       setErrors((prev) => ({ ...prev, [id]: null }))
     }
     setSubmitSuccess(false)
+    setSubmitError("")
+    setErrorDetails("")
   }
 
   const validate = () => {
@@ -75,23 +79,74 @@ export default function ContactSection() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitSuccess(false)
+    setSubmitError("")
+    setErrorDetails("")
+    
     if (validate()) {
       setIsSubmitting(true)
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      setSubmitSuccess(true)
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        date: today,
-        time: "18:00",
-        guests: "2",
-        requests: "",
-      })
-      setErrors({})
-      setIsSubmitting(false)
-      setTimeout(() => setSubmitSuccess(false), 5000)
+      
+      try {
+        const response = await fetch('/api/send-reservation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+
+        const result = await response.json()
+
+        if (response.ok) {
+          setSubmitSuccess(true)
+          // Only reset form on successful submission
+          setFormData({
+            name: "",
+            phone: "",
+            email: "",
+            date: today,
+            time: "18:00",
+            guests: "2",
+            requests: "",
+          })
+          setErrors({})
+          
+          // Show development mode message if applicable
+          if (result.message.includes('Development mode')) {
+            console.log('🔧 Development mode active - check browser console for email details')
+          }
+        } else {
+          // Handle different error types
+          if (response.status === 503) {
+            setSubmitError('Email service is temporarily unavailable. Your reservation has been recorded and we will contact you shortly.')
+            if (result.details) {
+              setErrorDetails(result.details)
+            }
+          } else {
+            setSubmitError(result.error || 'Failed to send reservation request. Please try again.')
+            if (result.details) {
+              setErrorDetails(result.details)
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error submitting reservation:', error)
+        setSubmitError('Network error. Please check your connection and try again.')
+        if (process.env.NODE_ENV === 'development') {
+          setErrorDetails(error.message)
+        }
+      } finally {
+        setIsSubmitting(false)
+      }
     }
+  }
+
+  const closeSuccessMessage = () => {
+    setSubmitSuccess(false)
+  }
+
+  const closeErrorMessage = () => {
+    setSubmitError("")
+    setErrorDetails("")
   }
 
   return (
@@ -232,12 +287,78 @@ export default function ContactSection() {
                 animate={{ opacity: 1, y: 0 }}
                 className="success-message-dark"
               >
-                Request submitted successfully! We will contact you to confirm.
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <div className="font-semibold">Reservation submitted successfully!</div>
+                      <div className="text-sm opacity-90">
+                        {process.env.NODE_ENV === 'development' 
+                          ? 'Check browser console for email details (Development mode)'
+                          : 'Check your email for confirmation'
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={closeSuccessMessage}
+                    className="text-green-400 hover:text-green-300 transition-colors"
+                    aria-label="Close success message"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {submitError && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="error-message-dark"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <div className="font-semibold">Submission Error</div>
+                      <div className="text-sm opacity-90">{submitError}</div>
+                      {errorDetails && (
+                        <div className="text-xs opacity-75 mt-1 font-mono bg-red-900 bg-opacity-50 p-1 rounded">
+                          {errorDetails}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={closeErrorMessage}
+                    className="text-red-400 hover:text-red-300 transition-colors"
+                    aria-label="Close error message"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </motion.div>
             )}
 
             <Button type="submit" size="lg" className="contact-submit-button" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Submit Request"}
+              {isSubmitting ? (
+                <div className="flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Processing...
+                </div>
+              ) : (
+                "Submit Reservation Request"
+              )}
             </Button>
           </form>
         </motion.div>
