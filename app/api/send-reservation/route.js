@@ -151,16 +151,19 @@ export async function POST(request) {
     // Send Telegram notification
     try {
       const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
-      const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
-      if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+      const TELEGRAM_CHAT_IDS = process.env.TELEGRAM_CHAT_IDS
+      if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_IDS) {
+        const chatIds = TELEGRAM_CHAT_IDS.split(',').map(id => id.trim())
         const telegramText = `🍽️ <b>New Reservation Received</b>\n\n<b>👤 Name:</b> ${name}\n<b>📞 Phone:</b> ${phone}\n<b>✉️ Email:</b> ${email}\n<b>📅 Date:</b> ${formattedDate}\n<b>⏰ Time:</b> ${formattedTime}\n<b>👥 Guests:</b> ${guests}\n<b>📝 Requests:</b> ${requests || 'None'}\n<b>🔑 Confirmation Code:</b> <code>${confirmationCode}</code>\n\n<em>Submitted via Tonle Sab Restaurant website</em>`
-        await sendTelegramMessage({
-          chatId: TELEGRAM_CHAT_ID,
-          text: telegramText,
-          botToken: TELEGRAM_BOT_TOKEN,
-        })
+        for (const chatId of chatIds) {
+          await sendTelegramMessage({
+            chatId,
+            text: telegramText,
+            botToken: TELEGRAM_BOT_TOKEN,
+          })
+        }
       } else {
-        console.warn('TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set. Skipping Telegram notification.')
+        console.warn('TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_IDS not set. Skipping Telegram notification.')
       }
     } catch (telegramError) {
       console.error('Failed to send Telegram notification:', telegramError)
