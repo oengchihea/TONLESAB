@@ -7,7 +7,7 @@ import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
 import { Label } from "../ui/label"
-import { User, PhoneIcon, Mail, CalendarDays, Clock, Users, MessageSquare, X } from "lucide-react"
+import { User, PhoneIcon, Mail, CalendarDays, Clock, Users, MessageSquare, X, Building } from "lucide-react"
 
 export default function ContactSection() {
   const today = new Date().toISOString().split("T")[0]
@@ -16,6 +16,7 @@ export default function ContactSection() {
     name: "",
     phone: "",
     email: "",
+    companyName: "",
     date: today,
     time: "18:00",
     guests: "2",
@@ -103,6 +104,7 @@ export default function ContactSection() {
             name: "",
             phone: "",
             email: "",
+            companyName: "",
             date: today,
             time: "18:00",
             guests: "2",
@@ -213,6 +215,20 @@ export default function ContactSection() {
                 aria-invalid={!!errors.email}
               />
               {errors.email && <p className="error-message">{errors.email}</p>}
+            </div>
+
+            <div className="contact-form-full-width">
+              <Label htmlFor="companyName" className="contact-form-label">
+                <Building className="text-amber-500" /> Company Name (Optional)
+              </Label>
+              <Input
+                id="companyName"
+                type="text"
+                placeholder="Your Company Name"
+                value={formData.companyName}
+                onChange={handleChange}
+                className="contact-form-input"
+              />
             </div>
 
             <div className="md:col-span-1">

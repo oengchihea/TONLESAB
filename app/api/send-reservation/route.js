@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
 import { sendTelegramMessage } from '../../../lib/telegram'
+import { sendReservationNotification, sendCustomerConfirmation } from '../../../lib/whatsapp'
 
 export async function POST(request) {
   try {
     const body = await request.json()
-    const { name, phone, email, date, time, guests, requests } = body
+    const { name, phone, email, companyName, date, time, guests, requests } = body
 
     // Validate required fields
     if (!name || !phone || !email || !date || !time || !guests) {
@@ -49,6 +50,7 @@ export async function POST(request) {
           <p><strong>Name:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Phone:</strong> ${phone}</p>
+          ${companyName ? `<p><strong>Company:</strong> ${companyName}</p>` : ''}
         </div>
         <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-radius: 5px;">
           <h2 style="color: #333;">Reservation Details</h2>
@@ -65,7 +67,7 @@ export async function POST(request) {
 
     // Plain text version for restaurant
     const textContent = `
-      New Reservation Request - Tonle Sab Restaurant\n\nCustomer Information:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nReservation Details:\nDate: ${formattedDate}\nTime: ${formattedTime}\nNumber of Guests: ${guests}\nSpecial Requests: ${requests || 'None'}\n\nThis reservation was submitted through the Tonle Sab Restaurant website.\n`
+      New Reservation Request - Tonle Sab Restaurant\n\nCustomer Information:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}${companyName ? `\nCompany: ${companyName}` : ''}\n\nReservation Details:\nDate: ${formattedDate}\nTime: ${formattedTime}\nNumber of Guests: ${guests}\nSpecial Requests: ${requests || 'None'}\n\nThis reservation was submitted through the Tonle Sab Restaurant website.\n`
 
     // Confirmation email for customer
     const confirmationHtml = `
@@ -154,7 +156,7 @@ export async function POST(request) {
       const TELEGRAM_CHAT_IDS = process.env.TELEGRAM_CHAT_IDS
       if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_IDS) {
         const chatIds = TELEGRAM_CHAT_IDS.split(',').map(id => id.trim())
-        const telegramText = `🍽️ <b>New Reservation Received</b>\n\n<b>👤 Name:</b> ${name}\n<b>📞 Phone:</b> ${phone}\n<b>✉️ Email:</b> ${email}\n<b>📅 Date:</b> ${formattedDate}\n<b>⏰ Time:</b> ${formattedTime}\n<b>👥 Guests:</b> ${guests}\n<b>📝 Requests:</b> ${requests || 'None'}\n<b>🔑 Confirmation Code:</b> <code>${confirmationCode}</code>\n\n<em>Submitted via Tonle Sab Restaurant website</em>`
+        const telegramText = `🍽️ <b>New Reservation Received</b>\n\n<b>👤 Name:</b> ${name}\n<b>📞 Phone:</b> ${phone}\n<b>✉️ Email:</b> ${email}${companyName ? `\n<b>🏢 Company:</b> ${companyName}` : ''}\n<b>📅 Date:</b> ${formattedDate}\n<b>⏰ Time:</b> ${formattedTime}\n<b>👥 Guests:</b> ${guests}\n<b>📝 Requests:</b> ${requests || 'None'}\n<b>🔑 Confirmation Code:</b> <code>${confirmationCode}</code>\n\n<em>Submitted via Tonle Sab Restaurant website</em>`
         for (const chatId of chatIds) {
           await sendTelegramMessage({
             chatId,
@@ -170,6 +172,24 @@ export async function POST(request) {
       // Continue even if Telegram notification fails
     }
 
+    // Send WhatsApp notification to restaurant
+    try {
+      await sendReservationNotification({
+        name,
+        phone,
+        email,
+        companyName,
+        date: formattedDate,
+        time: formattedTime,
+        guests,
+        requests,
+        confirmationCode
+      })
+    } catch (whatsappError) {
+      console.error('Failed to send WhatsApp notification to restaurant:', whatsappError)
+      // Continue even if WhatsApp notification fails
+    }
+
     // Send confirmation to customer
     try {
       await sendEmailDirect({
@@ -183,6 +203,21 @@ export async function POST(request) {
     } catch (confirmError) {
       console.error('Error sending confirmation email:', confirmError)
       // Continue even if confirmation email fails
+    }
+
+    // Send WhatsApp confirmation to customer
+    try {
+      await sendCustomerConfirmation({
+        name,
+        phone,
+        date: formattedDate,
+        time: formattedTime,
+        guests,
+        confirmationCode
+      })
+    } catch (whatsappConfirmError) {
+      console.error('Failed to send WhatsApp confirmation to customer:', whatsappConfirmError)
+      // Continue even if WhatsApp confirmation fails
     }
 
     return NextResponse.json(
