@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { sendTelegramMessage } from '../../../lib/telegram'
-import { sendReservationNotification, sendCustomerConfirmation } from '../../../lib/whatsapp'
+import { sendReservationNotification } from '../../../lib/whatsapp'
 
 export async function POST(request) {
   try {
@@ -174,7 +174,8 @@ export async function POST(request) {
 
     // Send WhatsApp notification to restaurant
     try {
-      await sendReservationNotification({
+      console.log('🏪 Attempting to send WhatsApp notification to restaurant...')
+      const whatsappResult = await sendReservationNotification({
         name,
         phone,
         email,
@@ -185,12 +186,18 @@ export async function POST(request) {
         requests,
         confirmationCode
       })
+      
+      if (whatsappResult.success) {
+        console.log('✅ Restaurant WhatsApp notification sent successfully')
+      } else {
+        console.error('❌ Restaurant WhatsApp notification failed:', whatsappResult.error)
+      }
     } catch (whatsappError) {
       console.error('Failed to send WhatsApp notification to restaurant:', whatsappError)
       // Continue even if WhatsApp notification fails
     }
 
-    // Send confirmation to customer
+    // Send confirmation email to customer
     try {
       await sendEmailDirect({
         to: email,
@@ -205,20 +212,8 @@ export async function POST(request) {
       // Continue even if confirmation email fails
     }
 
-    // Send WhatsApp confirmation to customer
-    try {
-      await sendCustomerConfirmation({
-        name,
-        phone,
-        date: formattedDate,
-        time: formattedTime,
-        guests,
-        confirmationCode
-      })
-    } catch (whatsappConfirmError) {
-      console.error('Failed to send WhatsApp confirmation to customer:', whatsappConfirmError)
-      // Continue even if WhatsApp confirmation fails
-    }
+    // Skip WhatsApp confirmation to customer - only send to restaurant per requirements
+    console.log('ℹ️ Customer WhatsApp confirmation disabled - only sending to restaurant')
 
     return NextResponse.json(
       {
